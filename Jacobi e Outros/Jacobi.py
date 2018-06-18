@@ -5,7 +5,7 @@
 # ## Matrícula:
 # 
 
-# In[3]:
+# In[1]:
 
 
 import numpy as np
@@ -24,7 +24,7 @@ import math
 # 
 # ## $$\Sigma_{j=1, j \neq i}^{n} \mid a_{i,j} \mid <  \mid a_{i,i} \mid $$
 
-# In[121]:
+# In[2]:
 
 
 def criterio_linhas(A):
@@ -50,7 +50,7 @@ def criterio_linhas(A):
     return np.amax(x)
 
 
-# In[122]:
+# In[3]:
 
 
 #Matriz A, Matriz b dos termos independentes e N o número de iterações e o erro
@@ -83,7 +83,7 @@ def jacobi(A, b, N, chute, erro = 0.00000001):
     return x
 
 
-# In[123]:
+# In[4]:
 
 
 mat = np.array([[10.0,2.0,1.0],[1.0,5.0,1.0],[2.0,3.0,10.0]])
@@ -95,13 +95,13 @@ ind2 = np.array([2.0,5.0,-17.0])
 chute2 = [1.0, 1.0, -1.0]
 
 
-# In[124]:
+# In[5]:
 
 
 jacobi(mat, ind, 3, chute1)
 
 
-# In[125]:
+# In[6]:
 
 
 jacobi(mat2, ind2, 4, chute2)
@@ -111,7 +111,7 @@ jacobi(mat2, ind2, 4, chute2)
 # 
 # ## $$< u  , v > = a.a' + b.b'$$
 
-# In[116]:
+# In[7]:
 
 
 def produto_interno(u, v):
@@ -127,24 +127,27 @@ def produto_interno(u, v):
     return resultado
 
 
-# In[117]:
+# In[33]:
 
 
 v = np.array([1,-1,1])
 u = np.array([1,1,0])
+v1 = np.array([1, -2, 2])
+u1 = np.array([-3, 6, -6])
 
 
-# In[118]:
+# In[35]:
 
 
 produto_interno(u, v)
+produto_interno(u1, v1)
 
 
 # # Ângulo Entre Vetores:
 # 
 # ##  $$cos (\theta) = \frac{< a  , b >}{\mid a \mid \mid b \mid}$$
 
-# In[119]:
+# In[45]:
 
 
 def angulo_vetores(u, v):
@@ -156,13 +159,16 @@ def angulo_vetores(u, v):
     n1 = np.linalg.norm(u)
     n2 = np.linalg.norm(v)
     total = prodint/(n1*n2)
-    total = math.cos(total)
+    totalcos = np.cos(total)
+    totalarccos = np.arccos(totalcos)
+    print(f"total radians: {total} cos: {totalcos} arccos: {totalarccos}")
     
-    return total
+    return (total, totalcos, totalarccos)
 
 
-# In[120]:
+# In[46]:
 
 
 angulo_vetores(u, v)
+angulo_vetores(u1, v1)
 
