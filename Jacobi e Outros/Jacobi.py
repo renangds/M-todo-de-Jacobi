@@ -5,7 +5,7 @@
 # ## Matrícula:
 # 
 
-# In[59]:
+# In[3]:
 
 
 import numpy as np
@@ -20,11 +20,44 @@ import math
 # ## $$x_{i}^{(k+1)} = \frac{(y_{i} - \Sigma_{j=1}^{n} a_{i,j}x_{j}^{(k)})}{a_{ii}}$$
 # 
 
-# In[60]:
+# # Convergência: Critério das Linhas
+# 
+# ## $$\Sigma_{j=1, j \neq i}^{n} \mid a_{i,j} \mid <  \mid a_{i,i} \mid $$
+
+# In[121]:
+
+
+def criterio_linhas(A):
+    swap = np.copy(A)
+    b = np.diag(A)
+    A = A - np.diagflat(b)
+    x = np.ones(b.size)
+    permutation = b.size**2
+    acc = True
+    
+    while(acc and permutation > 0):
+        for i in range(b.size):
+            x[i] = np.sum(A[i])/b[i]
+        
+        if(np.amax(x) < 1): acc = False
+        else:
+            permutation = permutation-1
+            swap = np.random.permutation(swap)
+            A = np.copy(swap)
+            b = np.diag(A)
+            A = A - np.diagflat(b)
+    
+    return np.amax(x)
+
+
+# In[122]:
 
 
 #Matriz A, Matriz b dos termos independentes e N o número de iterações e o erro
 def jacobi(A, b, N, chute, erro = 0.00000001):
+    if(criterio_linhas(A) > 1):
+        print("O sistema não converge para o método de Jacobi")
+        return
     
     x = np.diag(A) #recebe um vetor contendo a diagonal principal
     A = A - np.diagflat(x) #Zera a diagonal principal de A
@@ -50,7 +83,7 @@ def jacobi(A, b, N, chute, erro = 0.00000001):
     return x
 
 
-# In[61]:
+# In[123]:
 
 
 mat = np.array([[10.0,2.0,1.0],[1.0,5.0,1.0],[2.0,3.0,10.0]])
@@ -62,13 +95,13 @@ ind2 = np.array([2.0,5.0,-17.0])
 chute2 = [1.0, 1.0, -1.0]
 
 
-# In[62]:
+# In[124]:
 
 
 jacobi(mat, ind, 3, chute1)
 
 
-# In[63]:
+# In[125]:
 
 
 jacobi(mat2, ind2, 4, chute2)
@@ -78,10 +111,10 @@ jacobi(mat2, ind2, 4, chute2)
 # 
 # ## $$< u  , v > = a.a' + b.b'$$
 
-# In[43]:
+# In[116]:
 
 
-def produto_interno(u, v): #Produto interno entre dois vetores <u,v>
+def produto_interno(u, v):
     resultado = 0
     
     if(u.size != v.size):
@@ -90,18 +123,18 @@ def produto_interno(u, v): #Produto interno entre dois vetores <u,v>
     
     for i in range(u.size):
            resultado += u[i]*v[i]
-    #return math.cos(resultado)
+
     return resultado
 
 
-# In[44]:
+# In[117]:
 
 
 v = np.array([1,-1,1])
 u = np.array([1,1,0])
 
 
-# In[47]:
+# In[118]:
 
 
 produto_interno(u, v)
@@ -111,7 +144,7 @@ produto_interno(u, v)
 # 
 # ##  $$cos (\theta) = \frac{< a  , b >}{\mid a \mid \mid b \mid}$$
 
-# In[56]:
+# In[119]:
 
 
 def angulo_vetores(u, v):
@@ -128,7 +161,7 @@ def angulo_vetores(u, v):
     return total
 
 
-# In[57]:
+# In[120]:
 
 
 angulo_vetores(u, v)
